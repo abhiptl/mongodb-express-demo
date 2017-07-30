@@ -1,6 +1,5 @@
 let express = require('express');
 let router = express.Router();
-//let db = require('./mongo-db');
 let MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 let co = require('co');
