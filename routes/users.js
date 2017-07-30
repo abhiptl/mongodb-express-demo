@@ -1,20 +1,22 @@
 let express = require('express');
 let router = express.Router();
 //let db = require('./mongo-db');
-const MongoClient = require('mongodb').MongoClient
+let MongoClient = require('mongodb').MongoClient
+let co = require('co')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    MongoClient.connect("mongodb://localhost:27017/motionclassicdb", (err, database) => {
-        if (err) return console.log(err)
-        var db = database
-        db.collection('users').find().toArray(function(err, results) {
-            console.log(results)
-            res.status(200).json({
-                results
-            })
+    co(function*() {
+        var db = yield MongoClient.connect('mongodb://localhost:27017/motionclassicdb');
+        var userCollection = db.collection('users');
+        var users = yield userCollection.find().toArray();
+        res.status(201).json({
+            users
         })
-    })
+        db.close();
+    }).catch(function(err) {
+        console.log(err.stack);
+    });
 
 });
 
@@ -26,24 +28,17 @@ router.post('/', function(req, res, next) {
         gender : req.body.gender
     };
 
-
-
-    MongoClient.connect("mongodb://localhost:27017/motionclassicdb", (err, database) => {
-        if (err) return console.log(err)
-        var db = database
-
-
-        db.collection('users').save(req.body, (err, result) => {
-            if (err) return console.log(err)
-
-            console.log("Result :"+result)
-            res.status(201).json({
-                id : 101
-            })
+    co(function*() {
+        var db = yield MongoClient.connect('mongodb://localhost:27017/motionclassicdb');
+        var result = yield db.collection('users').insertOne(req.body);
+        res.status(201).json({
+            inserts : result.insertedCount
         })
-    })
 
-
+        db.close();
+    }).catch(function(err) {
+        console.log(err.stack);
+    });
 
 
 
