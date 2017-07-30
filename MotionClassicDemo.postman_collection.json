@@ -12,7 +12,46 @@
 			"description": "",
 			"item": [
 				{
-					"name": "http://localhost:3000/users",
+					"name": "http://localhost:3000/users POST",
+					"request": {
+						"url": "http://localhost:3000/users",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstname",
+									"value": "Abhishek",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Patel",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "M",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/users GET",
 					"request": {
 						"url": "http://localhost:3000/users",
 						"method": "POST",
